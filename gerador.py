@@ -39,14 +39,14 @@ for x in range(qtd_disciplines):
     worload_random = workloads[random.randint(0, 3)]
     cursor.execute("INSERT INTO Discipline (id, name, code, workload_in_clock, workload_in_class, is_optional) VALUES (%s, %s, %s, %s, %s, %s)", (x, fake.job(), f"TEC-{x}", (worload_random * 45) / 60, worload_random, bool(random.randint(0, 1))))
 
-# for x in range(qtd_classes):
-#     shifts = [
-#         'Matutino',
-#         'Vespertino',
-#         'Noturno'
-#     ]
-#     shift_random = shifts[random.randint(0,2)]
-#     cursor.execute("INSERT INTO Class (id, class_leader, course_id, reference_period, shift) VALUES (%s, %s, %s, %s, %s)", (x, x, x, random.randint(1, 7), shift_random))
+for x in range(qtd_classes):
+    shifts = [
+        'Matutino',
+        'Vespertino',
+        'Noturno'
+    ]
+    shift_random = shifts[random.randint(0,2)]
+    cursor.execute("INSERT INTO Class (id, class_leader, course_id, reference_period, shift) VALUES (%s, %s, %s, %s, %s)", (x, None, x, random.randint(1, 7), shift_random))
 
 # Confirmar as alterações e fechar a conexão
 conn.commit()
