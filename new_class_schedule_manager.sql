@@ -40,7 +40,7 @@ CREATE TABLE discipline (
 
 CREATE TABLE class (
 	id serial NOT NULL,
-	class_leader integer NOT NULL,
+	class_leader integer,
 	course_id integer NOT NULL,
 	reference_period integer NOT NULL,
 	shift varchar NOT NULL,
