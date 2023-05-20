@@ -6,20 +6,20 @@ fake = Faker()
 
 # Conexão com o banco de dados
 conn = psycopg2.connect(
-    dbname="escola",
-    user="postgres",
-    password="123",
+    dbname="bancofake",
+    user="postgresfake",
+    password="12345",
     host="localhost",
     port="5432"
 )
 cursor = conn.cursor()
 
 # Configurar a quantidade de linhas que você deseja gerar para cada tabela
-qtd_cidades = 200000
-qtd_universidades = 500
-qtd_professores = 50000
-qtd_alunos = 500000
-qtd_disciplinas = 1000
+qtd_teachers = 200000
+qtd_students = 500
+qtd_courses = 50000
+qtd_schedules = 500000
+qtd_disciplines = 1000
 
 # Gerar e inserir dados na tabela Cidade
 for _ in range(qtd_cidades):
