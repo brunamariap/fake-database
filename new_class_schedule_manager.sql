@@ -128,13 +128,13 @@ CREATE TABLE teachtemporarily (
 
 
 
-CREATE TABLE studentalerts (
+CREATE TABLE studentalert (
 	id serial NOT NULL,
 	discipline_id integer NOT NULL,
 	student_id integer NOT NULL,
 	created_at DATE NOT NULL,
 	reason varchar NOT NULL,
-	CONSTRAINT studentalerts_pk PRIMARY KEY (id)
+	CONSTRAINT studentalert_pk PRIMARY KEY (id)
 ) WITH (
   OIDS=FALSE
 );
@@ -153,11 +153,11 @@ CREATE TABLE coursediscipline (
 
 
 
-CREATE TABLE substituteteachers (
+CREATE TABLE substituteteacher (
 	id serial NOT NULL,
 	teacher_id integer NOT NULL,
 	class_canceled_id integer NOT NULL,
-	CONSTRAINT substituteteachers_pk PRIMARY KEY (id)
+	CONSTRAINT substituteteacher_pk PRIMARY KEY (id)
 ) WITH (
   OIDS=FALSE
 );
@@ -188,14 +188,14 @@ ALTER TABLE teachtemporarily ADD CONSTRAINT teachtemporarily_fk0 FOREIGN KEY (cl
 ALTER TABLE teachtemporarily ADD CONSTRAINT teachtemporarily_fk1 FOREIGN KEY (teacher_id) REFERENCES teacher(id);
 ALTER TABLE teachtemporarily ADD CONSTRAINT teachtemporarily_fk2 FOREIGN KEY (discipline_id) REFERENCES discipline(id);
 
-ALTER TABLE studentalerts ADD CONSTRAINT studentalerts_fk0 FOREIGN KEY (discipline_id) REFERENCES discipline(id);
-ALTER TABLE studentalerts ADD CONSTRAINT studentalerts_fk1 FOREIGN KEY (student_id) REFERENCES student(id);
+ALTER TABLE studentalert ADD CONSTRAINT studentalert_fk0 FOREIGN KEY (discipline_id) REFERENCES discipline(id);
+ALTER TABLE studentalert ADD CONSTRAINT studentalert_fk1 FOREIGN KEY (student_id) REFERENCES student(id);
 
 ALTER TABLE coursediscipline ADD CONSTRAINT coursediscipline_fk0 FOREIGN KEY (discipline_id) REFERENCES discipline(id);
 ALTER TABLE coursediscipline ADD CONSTRAINT coursediscipline_fk1 FOREIGN KEY (course_id) REFERENCES course(id);
 
-ALTER TABLE substituteteachers ADD CONSTRAINT substituteteachers_fk0 FOREIGN KEY (teacher_id) REFERENCES teacher(id);
-ALTER TABLE substituteteachers ADD CONSTRAINT substituteteachers_fk1 FOREIGN KEY (class_canceled_id) REFERENCES classcanceled(id);
+ALTER TABLE substituteteacher ADD CONSTRAINT substituteteacher_fk0 FOREIGN KEY (teacher_id) REFERENCES teacher(id);
+ALTER TABLE substituteteacher ADD CONSTRAINT substituteteacher_fk1 FOREIGN KEY (class_canceled_id) REFERENCES classcanceled(id);
 
 
 

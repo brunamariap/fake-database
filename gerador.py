@@ -48,6 +48,9 @@ for x in range(qtd_classes):
     shift_random = shifts[random.randint(0,2)]
     cursor.execute("INSERT INTO Class (id, class_leader, course_id, reference_period, shift) VALUES (%s, %s, %s, %s, %s)", (x, None, random.randint(0, qtd_courses-1), random.randint(1, 7), shift_random))
 
+for x in range(qtd_classes):
+    cursor.execute('INSERT INTO teach (id, teacher_id, discipline_id, class_id) VALUES (%s, %s, %s, %s)', (x, x, x, x))
+
 # Gerar e inserir dados na tabela Student
 for x in range(qtd_students):
     cursor.execute('INSERT INTO student (id, registration, name, profile_photo, class_id) VALUES (%s, %s, %s, %s, %s)', (x, x, fake.name(), fake.file_path(depth=3), random.randint(0, qtd_classes-1)))
@@ -71,7 +74,7 @@ for x in range(qtd_canceled_classes):
     reason_random = random.choice(reasons)
 
     cursor.execute('INSERT INTO classcanceled (id, schedule_id, canceled_date, reason, is_available) VALUES (%s, %s, %s, %s, %s)', 
-    (x, x,fake.date_time_between(start_date='now', end_date='+30d') ,reason_random, bool(random.randint(0, 1))))
+    (x, random.randint(0, qtd_schedules-1),fake.date_time_between(start_date='now', end_date='+30d') ,reason_random, bool(random.randint(0, 1))))
 
 
 for x in range(qtd_disciplines):
@@ -85,17 +88,15 @@ for x in range(qtd_disciplines):
 
     reason_random = random.choice(reasons)
 
-    cursor.execute('INSERT INTO substituteteachers (id, teacher_id, class_canceled_id) VALUES (%s, %s, %s)', (x, x,x))
+    cursor.execute('INSERT INTO substituteteacher (id, teacher_id, class_canceled_id) VALUES (%s, %s, %s)', (x, random.randint(0, qtd_teachers-1), random.randint(0, qtd_canceled_classes-1)))
 
 for x in range(qtd_disciplines):
-    cursor.execute('INSERT INTO coursediscipline (id, discipline_id, course_id, period) VALUES (%s, %s, %s, %s)', (x, x, random.randint(0, qtd_courses - 1), random.randint(1, 8)))
+    cursor.execute('INSERT INTO coursediscipline (id, discipline_id, course_id, period) VALUES (%s, %s, %s, %s)', (x, random.randint(0, qtd_disciplines-1), random.randint(0, qtd_courses - 1), random.randint(1, 8)))
 
 
-for x in range(qtd_canceled_classes/2):
-    cursor.execute('INSERT INTO teachtemporarily (id, class_canceled_id, quantity, teacher_id, discipline_id) VALUES (%s, %s, %s, %s, %s)', (x, x, random.randint(1, 4), x, x))
+for x in range(qtd_canceled_classes//2):
+    cursor.execute('INSERT INTO teachtemporarily (id, class_canceled_id, quantity, teacher_id, discipline_id) VALUES (%s, %s, %s, %s, %s)', (x, random.randint(0, qtd_canceled_classes-1), random.randint(1, 4), random.randint(0, qtd_teachers-1), random.randint(0, qtd_disciplines-1)))
 
-for x in range(qtd_classes):
-    cursor.execute('INSERT INTO teach (id, teacher_id, discipline_id, class_id) VALUES (%s, %s, %s, %s)', (x, x, x, x))
 
 for x in range(qtd_classes):
     reasons = [
@@ -105,8 +106,7 @@ for x in range(qtd_classes):
 
     reason_random = random.choice(reasons)
 
-    cursor.execute('INSERT INTO studentalerts (id, discipline_id, student_id, created_at, reason) VALUES (%s, %s, %s, %s, %s)', (x, x, x, fake.date_time_between(start_date='now', end_date='+7d'), reason_random))
-
+    cursor.execute('INSERT INTO studentalert (id, discipline_id, student_id, created_at, reason) VALUES (%s, %s, %s, %s, %s)', (x, random.randint(0, qtd_disciplines-1), random.randint(0, qtd_teachers-1), fake.date_time_between(start_date='now', end_date='+7d'), reason_random))
 
 
 # Confirmar as alterações e fechar a conexão
