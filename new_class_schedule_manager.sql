@@ -143,12 +143,12 @@ CREATE TABLE studentalerts (
 
 
 
-CREATE TABLE cousediscipline (
+CREATE TABLE coursediscipline (
 	id serial NOT NULL,
 	discipline_id integer NOT NULL,
 	course_id integer NOT NULL,
 	period integer NOT NULL,
-	CONSTRAINT cousediscipline_pk PRIMARY KEY (id)
+	CONSTRAINT coursediscipline_pk PRIMARY KEY (id)
 ) WITH (
   OIDS=FALSE
 );
