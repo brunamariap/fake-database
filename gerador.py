@@ -6,9 +6,9 @@ fake = Faker('pt-BR')
 
 # Conexão com o banco de dados
 conn = psycopg2.connect(
-    dbname="bancofake",
+    dbname="fake-database",
     user="postgres",
-    password="BMp@7890",
+    password="admin",
     host="localhost",
     port="5432"
 )
@@ -21,16 +21,7 @@ qtd_courses = 5000
 qtd_schedules = 50000
 qtd_disciplines = 10000
 qtd_classes = 5000
-
-
-cursor.execute('DELETE FROM Schedule')
-cursor.execute('DELETE FROM studentassociation')
-cursor.execute('DELETE FROM cousediscipline')
-cursor.execute('DELETE FROM Discipline')
-cursor.execute('DELETE FROM Student')
-cursor.execute('DELETE FROM Class')
-cursor.execute('DELETE FROM Course')
-cursor.execute('DELETE FROM Teacher')
+qtd_canceled_classes = 1000
 
 for x in range(qtd_teachers):
     cursor.execute('INSERT INTO teacher (id, registration, name, profile_photo, departament) VALUES (%s, %s, %s, %s, %s)', (x, x, fake.name(), fake.file_path(depth=3), 'Professor'))
@@ -68,8 +59,54 @@ for x in range(qtd_schedules):
 for x in range(qtd_students):
     cursor.execute('INSERT INTO studentassociation (id, student_id, discipline_id) VALUES (%s, %s, %s)', (x, random.randint(0, qtd_students - 1), random.randint(0, qtd_disciplines - 1)))
 
+for x in range(qtd_canceled_classes):
+    reasons = [
+        "Problemas de saúde",
+        "Compromisso inadiável",
+        "Emergência familiar",
+        "Dificuldades de transporte",
+        "Outros motivos pessoais"
+    ]
+
+    reason_random = random.choice(reasons)
+
+    cursor.execute('INSERT INTO classcanceled (id, schedule_id, canceled_date, reason, is_available) VALUES (%s, %s, %s, %s, %s)', 
+    (x, x,fake.date_time_between(start_date='now', end_date='+30d') ,reason_random, bool(random.randint(0, 1))))
+
+
 for x in range(qtd_disciplines):
-    cursor.execute('INSERT INTO cousediscipline (id, discipline_id, course_id, period) VALUES (%s, %s, %s, %s)', (x, x, random.randint(0, qtd_courses - 1), random.randint(1, 8)))
+    reasons = [
+        "Problemas de saúde",
+        "Compromisso inadiável",
+        "Emergência familiar",
+        "Dificuldades de transporte",
+        "Outros motivos pessoais"
+    ]
+
+    reason_random = random.choice(reasons)
+
+    cursor.execute('INSERT INTO substituteteachers (id, teacher_id, class_canceled_id) VALUES (%s, %s, %s)', (x, x,x))
+
+for x in range(qtd_disciplines):
+    cursor.execute('INSERT INTO coursediscipline (id, discipline_id, course_id, period) VALUES (%s, %s, %s, %s)', (x, x, random.randint(0, qtd_courses - 1), random.randint(1, 8)))
+
+
+for x in range(qtd_canceled_classes/2):
+    cursor.execute('INSERT INTO teachtemporarily (id, class_canceled_id, quantity, teacher_id, discipline_id) VALUES (%s, %s, %s, %s, %s)', (x, x, random.randint(1, 4), x, x))
+
+for x in range(qtd_classes):
+    cursor.execute('INSERT INTO teach (id, teacher_id, discipline_id, class_id) VALUES (%s, %s, %s, %s)', (x, x, x, x))
+
+for x in range(qtd_classes):
+    reasons = [
+        "Ninguém chegou na sala",
+        "Professor está ausente mas a sala X está aberta",
+    ]
+
+    reason_random = random.choice(reasons)
+
+    cursor.execute('INSERT INTO studentalerts (id, discipline_id, student_id, created_at, reason) VALUES (%s, %s, %s, %s, %s)', (x, x, x, fake.date_time_between(start_date='now', end_date='+7d'), reason_random))
+
 
 
 # Confirmar as alterações e fechar a conexão
