@@ -33,7 +33,7 @@ for x in range(qtd_disciplines):
     workloads = [
         30,
         60,
-        80,
+        90,
         120,
     ]
     worload_random = workloads[random.randint(0, 3)]
@@ -49,7 +49,7 @@ for x in range(qtd_classes):
     cursor.execute("INSERT INTO Class (id, class_leader, course_id, reference_period, shift) VALUES (%s, %s, %s, %s, %s)", (x, None, random.randint(0, qtd_courses-1), random.randint(1, 7), shift_random))
 
 for x in range(qtd_classes):
-    cursor.execute('INSERT INTO teach (id, teacher_id, discipline_id, class_id) VALUES (%s, %s, %s, %s)', (x, x, x, x))
+    cursor.execute('INSERT INTO teach (id, teacher_id, discipline_id, class_id) VALUES (%s, %s, %s, %s)', (x, random.randint(0, qtd_teachers-1), random.randint(0, qtd_disciplines-1), random.randint(0, qtd_classes-1)))
 
 # Gerar e inserir dados na tabela Student
 for x in range(qtd_students):
